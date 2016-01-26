@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.winndoo.seoinfo.mapper.ProjinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.winndoo.seoinfo.po.Projinfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="projtype_id" property="projtypeId" jdbcType="INTEGER" />
+    <result column="updateTime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="rateResult" property="rateresult" jdbcType="VARCHAR" />
+    <result column="priceDes" property="pricedes" jdbcType="VARCHAR" />
+    <result column="priceFileName" property="pricefilename" jdbcType="VARCHAR" />
+    <result column="detailDes" property="detaildes" jdbcType="VARCHAR" />
+    <result column="detailFileName" property="detailfilename" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, projtype_id, updateTime, rateResult, priceDes, priceFileName, detailDes, detailFileName
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.winndoo.seoinfo.po.ProjinfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from projinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from projinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from projinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.winndoo.seoinfo.po.ProjinfoExample" >
+    delete from projinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.winndoo.seoinfo.po.Projinfo" >
+    insert into projinfo (id, projtype_id, updateTime, 
+      rateResult, priceDes, priceFileName, 
+      detailDes, detailFileName)
+    values (#{id,jdbcType=INTEGER}, #{projtypeId,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{rateresult,jdbcType=VARCHAR}, #{pricedes,jdbcType=VARCHAR}, #{pricefilename,jdbcType=VARCHAR}, 
+      #{detaildes,jdbcType=VARCHAR}, #{detailfilename,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.winndoo.seoinfo.po.Projinfo" >
+    insert into projinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="projtypeId != null" >
+        projtype_id,
+      </if>
+      <if test="updatetime != null" >
+        updateTime,
+      </if>
+      <if test="rateresult != null" >
+        rateResult,
+      </if>
+      <if test="pricedes != null" >
+        priceDes,
+      </if>
+      <if test="pricefilename != null" >
+        priceFileName,
+      </if>
+      <if test="detaildes != null" >
+        detailDes,
+      </if>
+      <if test="detailfilename != null" >
+        detailFileName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="projtypeId != null" >
+        #{projtypeId,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rateresult != null" >
+        #{rateresult,jdbcType=VARCHAR},
+      </if>
+      <if test="pricedes != null" >
+        #{pricedes,jdbcType=VARCHAR},
+      </if>
+      <if test="pricefilename != null" >
+        #{pricefilename,jdbcType=VARCHAR},
+      </if>
+      <if test="detaildes != null" >
+        #{detaildes,jdbcType=VARCHAR},
+      </if>
+      <if test="detailfilename != null" >
+        #{detailfilename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.winndoo.seoinfo.po.ProjinfoExample" resultType="java.lang.Integer" >
+    select count(*) from projinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update projinfo
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.projtypeId != null" >
+        projtype_id = #{record.projtypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.updatetime != null" >
+        updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.rateresult != null" >
+        rateResult = #{record.rateresult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pricedes != null" >
+        priceDes = #{record.pricedes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pricefilename != null" >
+        priceFileName = #{record.pricefilename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.detaildes != null" >
+        detailDes = #{record.detaildes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.detailfilename != null" >
+        detailFileName = #{record.detailfilename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update projinfo
+    set id = #{record.id,jdbcType=INTEGER},
+      projtype_id = #{record.projtypeId,jdbcType=INTEGER},
+      updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+      rateResult = #{record.rateresult,jdbcType=VARCHAR},
+      priceDes = #{record.pricedes,jdbcType=VARCHAR},
+      priceFileName = #{record.pricefilename,jdbcType=VARCHAR},
+      detailDes = #{record.detaildes,jdbcType=VARCHAR},
+      detailFileName = #{record.detailfilename,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.winndoo.seoinfo.po.Projinfo" >
+    update projinfo
+    <set >
+      <if test="projtypeId != null" >
+        projtype_id = #{projtypeId,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null" >
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rateresult != null" >
+        rateResult = #{rateresult,jdbcType=VARCHAR},
+      </if>
+      <if test="pricedes != null" >
+        priceDes = #{pricedes,jdbcType=VARCHAR},
+      </if>
+      <if test="pricefilename != null" >
+        priceFileName = #{pricefilename,jdbcType=VARCHAR},
+      </if>
+      <if test="detaildes != null" >
+        detailDes = #{detaildes,jdbcType=VARCHAR},
+      </if>
+      <if test="detailfilename != null" >
+        detailFileName = #{detailfilename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.winndoo.seoinfo.po.Projinfo" >
+    update projinfo
+    set projtype_id = #{projtypeId,jdbcType=INTEGER},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      rateResult = #{rateresult,jdbcType=VARCHAR},
+      priceDes = #{pricedes,jdbcType=VARCHAR},
+      priceFileName = #{pricefilename,jdbcType=VARCHAR},
+      detailDes = #{detaildes,jdbcType=VARCHAR},
+      detailFileName = #{detailfilename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

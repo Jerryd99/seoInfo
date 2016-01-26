@@ -1,0 +1,37 @@
+body {
+  background: #fbfbfb;
+}
+
+.table {
+  width: 90%;
+  margin: 0 auto;
+}
+
+caption {
+  text-align: center;
+  font-weight: 900;
+  font-size: 26px;
+  color: #000;
+}
+
+.th1 {
+  background-color: #00a8a9;
+}
+
+.th2 {
+  background-color: #33cccc;
+}
+
+.th3 {
+  background-color: #3399;
+}
+
+.th4 {
+  background-color: #99cccc;
+}
+
+.th5 {
+  background-color: #66cccc;
+}
+
+/*# sourceMappingURL=index.css.map */
