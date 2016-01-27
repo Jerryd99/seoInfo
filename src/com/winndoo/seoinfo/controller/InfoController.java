@@ -45,21 +45,30 @@ public class InfoController {
 
 	// 总表单浏览
 	@RequestMapping("/tables")
-	public ModelAndView queryItems() throws Exception {
+	public ModelAndView queryTables() throws Exception {
 		List<ProjSimpleInfo> projsList = infoService.findProjsList();
 		List<TableInfo> tablesList = infoService.getTablesInfo(projsList);
 		ModelAndView modelAndView = new ModelAndView();
-		// 相当 于request的setAttribut，在jsp页面中通过itemsList取数据
 		modelAndView.addObject("tablesList", tablesList);
 		modelAndView.addObject("projsList", projsList);
-		modelAndView.addObject("test", "aaaa");
-		modelAndView.setViewName("projList");
+		modelAndView.setViewName("tableList");
 
 		return modelAndView;
 	}
+	
+	// 总产品浏览
+	@RequestMapping("/items")
+	public ModelAndView queryItems() throws Exception {
+		List<ProjSimpleInfo> projsList = infoService.findProjsList();
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("projsList", projsList);
+		modelAndView.setViewName("itemList");
 
+		return modelAndView;	
+	}
+	
 	// 查看具体项目
-	@RequestMapping("/produce/{proj_id}")
+	@RequestMapping("/items/{proj_id}")
 	public ModelAndView itemsView(@PathVariable("proj_id") Integer proj_id) throws Exception {
 
 		String projName = infoService.findProjNameById(proj_id);

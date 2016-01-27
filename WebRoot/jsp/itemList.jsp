@@ -47,38 +47,26 @@
   </head>
   <body>
 
-<c:forEach items="${tablesList }" var="table">  
-  	<table id="${table.tableId}" class="table table-bordered">
-   		<caption><a href="">${table.tableName}</a></caption>
+
+  	<table class="table table-bordered">
+   		<caption>项目列表</caption>
    		<thead class="th1">
       		<tr>
          		<th>项目分类</th>
-         		<th>效果达标率</th>
-         		<th>最新更新时间</th>
          		<th>查看详情</th>
       		</tr>
    		</thead>
    		<tbody>
    		
-   		<c:forEach items="${table.projs}" var="proj">
+   		<c:forEach items="${projsList}" var="proj">
       		<tr>
          		<td class="td1">${proj.projName }</td>
-         		<td>
-				<script>
-				var str = '${proj.rateResult }';
-				if(str !== null || str !== undefined || str !== ''){
-			    	for(var index in str.split(";")){
-			    		document.write(str.split(";")[index]+'<br/>');
-				    }
-			    }
-			   	</script>
-			    </td>
-         		<td><fmt:formatDate value="${proj.updateTime}" pattern="yyyy-MM-dd"/></td>
-         		<td><a href="${pageContext.request.contextPath }/info/produce/${proj.projId}">查看</a></td>
+         		
+         		<td><a href="${pageContext.request.contextPath }/info/items/${proj.projId}">查看</a></td>
       		</tr>
 		</c:forEach>
    		</tbody>
 	</table>
-</c:forEach>
+
   </body>
 </html>
