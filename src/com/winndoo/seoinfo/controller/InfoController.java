@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,16 +82,16 @@ public class InfoController {
 		return modelAndView;
 	}
 
-	//请求登录，只有账号密码正确才能上传文件
+	// 请求登录，只有账号密码正确才能上传文件
 	@RequestMapping(value = "login")
 	public String toUpload() {
 		return "login";
 	}
-	
-	//登录，设置session，不匹配则返回登录,成功则转到上传页面
+
+	// 登录，设置session，不匹配则返回登录,成功则转到上传页面
 	@RequestMapping("/submitLogin")
 	public String login(HttpSession session, String username, String password) throws Exception {
-		if(!username.equals("admin888") || !password.equals("111111")){
+		if (!username.equals("admin888") || !password.equals("111111")) {
 			return "login";
 		}
 		session.setAttribute("username", username);
@@ -98,7 +99,7 @@ public class InfoController {
 		return "upload";
 	}
 
-	//提交上传文件 判断权限
+	// 提交上传文件 判断权限
 	@RequestMapping("/submitUpload")
 	public String submitUpload(Model model, HttpSession session, MultipartFile remoteFile) throws Exception {
 
@@ -111,13 +112,28 @@ public class InfoController {
 		// 上传
 		if (remoteFile != null && originalFilename != null && originalFilename.length() > 0) {
 			File newFile = new File(uploadDir + originalFilename);
+			try {
+					if(!newFile.getParentFile().exists()){
+				
+				
+						newFile.getParentFile().mkdirs();
+					}
+				newFile.createNewFile();
+				
+	            
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        
+		
 			remoteFile.transferTo(newFile);
 		}
-		//成功则继续上传
-		return "upload";
+	// 成功则继续上传
+	return"upload";
+
 	}
 
-	//下载文件
+	// 下载文件
 	@RequestMapping("/download/{fileName}.{suffix}")
 	public ModelAndView download(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("fileName") String fileName, @PathVariable("suffix") String suffix) throws Exception {
