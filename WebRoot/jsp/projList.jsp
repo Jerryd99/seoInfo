@@ -63,7 +63,16 @@
    		<c:forEach items="${table.projs}" var="proj">
       		<tr>
          		<td class="td1">${proj.projName }</td>
-         		<td>${proj.rateResult }</td>
+         		<td>
+				<script>
+				var str = '${proj.rateResult }';
+				if(str !== null || str !== undefined || str !== ''){
+			    	for(var index in str.split(";")){
+			    		document.write(str.split(";")[index]+'<br/>');
+				    }
+			    }
+			   	</script>
+			    </td>
          		<td><fmt:formatDate value="${proj.updateTime}" pattern="yyyy-MM-dd"/></td>
          		<td><a href="${pageContext.request.contextPath }/info/produce/${proj.projId}">查看</a></td>
       		</tr>
