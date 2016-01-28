@@ -91,13 +91,13 @@ public class InfoController {
 		return modelAndView;
 	}
 
-	// 请求登录，只有账号密码正确才能上传文件
+	/*// 取消上传，直接放到tomcat 请求登录，只有账号密码正确才能上传文件
 	@RequestMapping(value = "login")
 	public String toUpload() {
 		return "login";
 	}
 
-	// 登录，设置session，不匹配则返回登录,成功则转到上传页面
+	// 取消上传，直接放到tomcat 登录，设置session，不匹配则返回登录,成功则转到上传页面
 	@RequestMapping("/submitLogin")
 	public String login(HttpSession session, String username, String password) throws Exception {
 		if (!username.equals("admin888") || !password.equals("111111")) {
@@ -108,11 +108,12 @@ public class InfoController {
 		return "upload";
 	}
 
-	// 提交上传文件 判断权限
+	// 取消上传，直接放到tomcat 提交上传文件 判断权限
 	@RequestMapping("/submitUpload")
 	public String submitUpload(Model model, HttpSession session, MultipartFile remoteFile) throws Exception {
 
-		String uploadDir = session.getServletContext().getRealPath("/") + "upLoadDir\\";
+		//windows路径\\; LINUX路径/
+		String uploadDir = session.getServletContext().getRealPath("/") + "upLoadDir/";
 		if (!session.getAttribute("username").equals("admin888")) {
 			return "login";
 		}
@@ -123,30 +124,25 @@ public class InfoController {
 			File newFile = new File(uploadDir + originalFilename);
 			try {
 					if(!newFile.getParentFile().exists()){
-				
-				
 						newFile.getParentFile().mkdirs();
 					}
 				newFile.createNewFile();
-				
-	            
 	            } catch (IOException e) {
 	                e.printStackTrace();
 	            }
-	        
-		
 			remoteFile.transferTo(newFile);
 		}
 	// 成功则继续上传
 	return"upload";
-
-	}
+	}*/
 
 	// 下载文件
+	//filename不能为中文 由于文件是直接拖到linux下，没有转换文件名
 	@RequestMapping("/download/{fileName}.{suffix}")
 	public ModelAndView download(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("fileName") String fileName, @PathVariable("suffix") String suffix) throws Exception {
 		String contentType = "application/octet-stream";
+//		String str = new String(fileName.getBytes("ISO8859-1"),"utf-8");
 		String fullFileName = fileName + "." + suffix;
 		infoService.download(request, response, fullFileName, contentType);
 

@@ -126,10 +126,11 @@ public class InfoServiceImpl implements InfoService{
 		BufferedInputStream bis = null;
 		BufferedOutputStream bos = null;
 
-		String ctxPath = request.getSession().getServletContext().getRealPath("/") + "upLoadDir\\";
+		String ctxPath = request.getSession().getServletContext().getRealPath("/") + "upLoadDir/";
 		String downLoadPath = ctxPath + fullFileName;
 
-		long fileLength = new File(downLoadPath).length();
+		File file = new File(downLoadPath);
+		long fileLength = file.length();
 
 		response.setContentType(contentType);
 		response.setHeader("Content-disposition", "attachment; filename=" + fullFileName);
