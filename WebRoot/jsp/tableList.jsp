@@ -7,6 +7,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>产品列表</title>
     <!-- Bootstrap -->
@@ -18,9 +19,7 @@
       <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-        body {
-          background: #fbfbfb;
-        }
+        
 
         .table {
           width: 90%;
@@ -42,28 +41,53 @@
         .th1 {
           background-color: #52bea6;
         }
-
+ .table>tbody>tr>td {
+        	vertical-align: middle;
+        }
+        .first{
+        	width:24%;
+        	color:#fff;
+        	text-align:center;
+        }
+        .second{
+        	width:40%;
+        	color:#fff;
+        	text-align:center;
+        }
+        .four{
+        	width:18%;
+        	color:#fff;
+        	text-align:center;
+        }
+        .five{
+        	width:18%;
+        	color:#fff;
+        	text-align:center;
+        }
+        hr{
+        	width:90%;
+        }
     </style>
   </head>
   <body>
 
 <c:forEach items="${tablesList }" var="table">  
-  	<table id="${table.tableId}" class="table table-bordered">
+  	<table id="${table.tableId}" class="table table-bordered table-striped">
    		<caption><a href="">${table.tableName}</a></caption>
    		<thead class="th1">
       		<tr>
-         		<th>项目分类</th>
-         		<th>效果达标率</th>
-         		<th>最新更新时间</th>
-         		<th>查看详情</th>
+         		<th class="first">项目分类</th>
+         		<th class="second">达标率</th>
+         		<th class="four">更新</th>
+         		<th class="five">详情</th>
       		</tr>
    		</thead>
    		<tbody>
    		
    		<c:forEach items="${table.projs}" var="proj">
       		<tr>
-         		<td class="td1">${proj.projName }</td>
-         		<td>
+         		<td style="text-align:center;" class="td1">${proj.projName }</td>
+         		<td style="text-align:center;">
 				<script>
 				var str = '${proj.rateResult }';
 				if(str !== null || str !== undefined || str !== ''){
@@ -73,12 +97,14 @@
 			    }
 			   	</script>
 			    </td>
-         		<td><fmt:formatDate value="${proj.updateTime}" pattern="yyyy-MM-dd"/></td>
-         		<td><a href="${pageContext.request.contextPath }/info/items/${proj.projId}">查看</a></td>
+         		<td style="text-align:center;"><fmt:formatDate value="${proj.updateTime}" pattern="MM-dd"/></td>
+         		<td style="text-align:center;"><a href="${pageContext.request.contextPath }/info/items/${proj.projId}">查看</a></td>
       		</tr>
 		</c:forEach>
    		</tbody>
 	</table>
+	<hr>
 </c:forEach>
+<br/><br/><br/>
   </body>
 </html>

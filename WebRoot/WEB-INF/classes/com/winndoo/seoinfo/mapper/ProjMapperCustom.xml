@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.winndoo.seoinfo.mapper.ProjMapperCustom" >
+	<resultMap type="com.winndoo.seoinfo.po.ProjDetailInfo" id="projDesList">
+		
+		<!-- 
+		collection：对关联查询到多条记录映射到集合对象中
+		property：将关联查询到多条记录映射到哪个属性
+		ofType：指定映射到list集合属性中pojo的类型
+		 -->
+		 <collection property="projDesList" ofType="com.winndoo.seoinfo.po.Projdes">
+		 	<!-- id：唯 一标识-->
+		 	<id column="id" property="id"/>
+		 	<result column="desTitle" property="title"/>
+		 	<result column="desContent" property="content"/>
+		 </collection>
+		
+	
+	</resultMap>
+   
+  	<select id="findProjsList" parameterType="int"
+  		 resultType="com.winndoo.seoinfo.po.ProjSimpleInfo">
+  		SELECT tabletype.`id` tableId,tabletype.`tableName`,projtype.`id` projId, projtype.`projName`, projinfo.`rateResult`, projinfo.`updateTime` FROM projtype,projinfo,tabletype WHERE projtype.id=projinfo.`projtype_id` AND projtype.`tabletype_id`=tabletype.id;
+  	</select>
+  	
+  	<select id="findProjDesListByProjId" parameterType="int"
+  		 resultMap="projDesList">
+  		SELECT projdes.`id`,projdes.`title` desTitle,projdes.`content` desContent FROM projdes WHERE projdes.`projtype_id` = #{id};
+  	</select>
+  	
+  	<select id="findProjPriceDesByProjId" parameterType="int"
+  		 resultType="String">
+  		SELECT projinfo.`priceDes` FROM projinfo WHERE projinfo.`projtype_id` = #{id};
+  	</select>
+  	
+  	<select id="findProjDetailDesByProjId" parameterType="int"
+  		 resultType="String">
+  		SELECT projinfo.`detailDes` FROM projinfo WHERE projinfo.`projtype_id` = #{id};
+  	</select>
+  	
+  	<select id="findProjPriceFileByProjId" parameterType="int"
+  		 resultType="string">
+  		SELECT projinfo.`priceFileName` FROM projinfo WHERE projinfo.`projtype_id` = #{id};
+  	</select>
+  	
+  	<select id="findProjDetailFileByProjId" parameterType="int"
+  		 resultType="string">
+  		SELECT projinfo.`detailFileName` FROM projinfo WHERE projinfo.`projtype_id` = #{id};
+  	</select>
+  	
+</mapper>

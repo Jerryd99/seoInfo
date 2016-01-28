@@ -7,6 +7,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
     <title>产品列表</title>
     <link href="${pageContext.request.contextPath }/css/bootstrap.min.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -29,23 +30,21 @@
 		}
     .intro {
       font-weight: bold;
-    }
-    .tr1 {
       background-color: #52bea6;
     }
-    .tr2 {
-      background-color: #68ba8a;
-    }
-    .tr3 {
-      background-color: #47c18a;
+    .tr1 {
+      background-color: #52bea6!important;
     }
     .tdWidth{
-      width: 140px;
+      width: 40%;
     }
+    .table>tbody>tr>td {
+        	vertical-align: middle;
+        }
     </style>
   </head>
   <body>
-  	<table class="table table-bordered">
+  	<table class="table table-bordered table-striped">
    		<caption>${projName}</caption>
    		<tbody>
          <tr class='tr1'>
@@ -60,7 +59,7 @@
       	</tr>
 		</c:forEach>
       		
-          <tr class='tr2'>
+          <tr class='tr1'>
             <td class="intro tdWidth" style="border-right:none;">产品报价</td>
             <td style="border-left:none;"></td>
           </tr>
@@ -70,7 +69,7 @@
 			<td><a href="${pageContext.request.contextPath }/info/download/${priceFileName}">${priceFileName}</a></td>
           </tr>
 
-          <tr class='tr3'>
+          <tr class='tr1'>
             <td class="intro tdWidth" style="border-right:none;">产品介绍资料</td>
             <td style="border-left:none;"></td>
           </tr>
