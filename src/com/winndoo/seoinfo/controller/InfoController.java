@@ -30,12 +30,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.winndoo.seoinfo.httpRequestUtils.HttpRequestUtils;
 import com.winndoo.seoinfo.po.ProjDetailInfo;
 import com.winndoo.seoinfo.po.ProjSimpleInfo;
 import com.winndoo.seoinfo.po.Projdes;
 import com.winndoo.seoinfo.po.TableInfo;
 import com.winndoo.seoinfo.service.InfoService;
+import com.winndoo.seoinfo.service.WxBindService;
+import com.winndoo.seoinfo.utils.HttpRequestUtils;
 
 import net.sf.json.JSONObject;
 
@@ -46,35 +47,43 @@ public class InfoController {
 	@Autowired
 	private InfoService infoService;
 	
-	public static final String BIND_ACCOUNT ="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd62ba60538758396&redirect_uri=http%3A%2F%2Fseo.winndoo.com%2FseoInfo%2Finfo%2Fwxbind&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
-//	wxd62ba60538758396
+	@Autowired
+	private WxBindService wxBindService;
+
+	// wxd62ba60538758396
 	// 获取是否有cookie
-	@RequestMapping("/wxbind")
-	public String bind(HttpServletRequest request, HttpSession session/*@RequestParam(value="code", required=false) String code*/) throws Exception {
-		
-			String nickname2 = (String) session.getAttribute("nickname");
-			if(nickname2 == null){
-				
-			}
-		
-			String code = request.getParameter("code");
-			String state = request.getParameter("state");
-			if("123".equalsIgnoreCase(state)&&code!=null){
-			String token_uri = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxd62ba60538758396&secret=743e539c3a85117fdc6a11cf70816b3d&code="+code+"&grant_type=authorization_code";
+	@RequestMapping("/wxbind/{path}")
+	public String bind(HttpServletRequest request, HttpSession session, @PathVariable("path") String path)
+			throws Exception {
+
+		String code = request.getParameter("code");
+		String state = request.getParameter("state");
+		if (code) {
+
+		}
+		String nickname = (String) session.getAttribute("nickname");
+		if (nickname == null) {
+			return "redirect:" + BIND_ACCOUNT;
+		}
+
+		if ("123".equalsIgnoreCase(state) && code != null) {
+			String token_uri = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxd62ba60538758396&secret=743e539c3a85117fdc6a11cf70816b3d&code="
+					+ code + "&grant_type=authorization_code";
 
 			JSONObject jsonToken = HttpRequestUtils.httpGet(token_uri);
 			String access_token = jsonToken.getString("access_token");
 			String openid = jsonToken.getString("openid");
-			
-			String  userInfo_url = "https://api.weixin.qq.com/sns/userinfo?"+"access_token=" + access_token+"&openid="+openid+"&lang=zh_CN";
+
+			String userInfo_url = "https://api.weixin.qq.com/sns/userinfo?" + "access_token=" + access_token
+					+ "&openid=" + openid + "&lang=zh_CN";
 			JSONObject jsonUser = HttpRequestUtils.httpGet(userInfo_url);
-			String nickname = new String(jsonUser.getString("nickname").getBytes("ISO8859-1"),"utf-8");
-						
+			String nickname = new String(jsonUser.getString("nickname").getBytes("ISO8859-1"), "utf-8");
+
 		}
-		
+
 		return "info/tables";
 	}
-	
+
 	// 总表单浏览
 	@RequestMapping("/tables")
 	public ModelAndView queryTables() throws Exception {
@@ -87,7 +96,7 @@ public class InfoController {
 
 		return modelAndView;
 	}
-	
+
 	// 总产品浏览
 	@RequestMapping("/items")
 	public ModelAndView queryItems() throws Exception {
@@ -96,9 +105,9 @@ public class InfoController {
 		modelAndView.addObject("projsList", projsList);
 		modelAndView.setViewName("itemList");
 
-		return modelAndView;	
+		return modelAndView;
 	}
-	
+
 	// 查看具体项目
 	@RequestMapping("/items/{proj_id}")
 	public ModelAndView itemsView(@PathVariable("proj_id") Integer proj_id) throws Exception {
@@ -123,58 +132,44 @@ public class InfoController {
 		return modelAndView;
 	}
 
-	/*// 取消上传，直接放到tomcat 请求登录，只有账号密码正确才能上传文件
-	@RequestMapping(value = "login")
-	public String toUpload() {
-		return "login";
-	}
-
-	// 取消上传，直接放到tomcat 登录，设置session，不匹配则返回登录,成功则转到上传页面
-	@RequestMapping("/submitLogin")
-	public String login(HttpSession session, String username, String password) throws Exception {
-		if (!username.equals("admin888") || !password.equals("111111")) {
-			return "login";
-		}
-		session.setAttribute("username", username);
-		session.setAttribute("password", password);
-		return "upload";
-	}
-
-	// 取消上传，直接放到tomcat 提交上传文件 判断权限
-	@RequestMapping("/submitUpload")
-	public String submitUpload(Model model, HttpSession session, MultipartFile remoteFile) throws Exception {
-
-		//windows路径\\; LINUX路径/
-		String uploadDir = session.getServletContext().getRealPath("/") + "upLoadDir/";
-		if (!session.getAttribute("username").equals("admin888")) {
-			return "login";
-		}
-		// 原始名称
-		String originalFilename = remoteFile.getOriginalFilename();
-		// 上传
-		if (remoteFile != null && originalFilename != null && originalFilename.length() > 0) {
-			File newFile = new File(uploadDir + originalFilename);
-			try {
-					if(!newFile.getParentFile().exists()){
-						newFile.getParentFile().mkdirs();
-					}
-				newFile.createNewFile();
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-			remoteFile.transferTo(newFile);
-		}
-	// 成功则继续上传
-	return"upload";
-	}*/
+	/*
+	 * // 取消上传，直接放到tomcat 请求登录，只有账号密码正确才能上传文件
+	 * 
+	 * @RequestMapping(value = "login") public String toUpload() { return
+	 * "login"; }
+	 * 
+	 * // 取消上传，直接放到tomcat 登录，设置session，不匹配则返回登录,成功则转到上传页面
+	 * 
+	 * @RequestMapping("/submitLogin") public String login(HttpSession session,
+	 * String username, String password) throws Exception { if
+	 * (!username.equals("admin888") || !password.equals("111111")) { return
+	 * "login"; } session.setAttribute("username", username);
+	 * session.setAttribute("password", password); return "upload"; }
+	 * 
+	 * // 取消上传，直接放到tomcat 提交上传文件 判断权限
+	 * 
+	 * @RequestMapping("/submitUpload") public String submitUpload(Model model,
+	 * HttpSession session, MultipartFile remoteFile) throws Exception {
+	 * 
+	 * //windows路径\\; LINUX路径/ String uploadDir =
+	 * session.getServletContext().getRealPath("/") + "upLoadDir/"; if
+	 * (!session.getAttribute("username").equals("admin888")) { return "login";
+	 * } // 原始名称 String originalFilename = remoteFile.getOriginalFilename(); //
+	 * 上传 if (remoteFile != null && originalFilename != null &&
+	 * originalFilename.length() > 0) { File newFile = new File(uploadDir +
+	 * originalFilename); try { if(!newFile.getParentFile().exists()){
+	 * newFile.getParentFile().mkdirs(); } newFile.createNewFile(); } catch
+	 * (IOException e) { e.printStackTrace(); } remoteFile.transferTo(newFile);
+	 * } // 成功则继续上传 return"upload"; }
+	 */
 
 	// 下载文件
-	//filename不能为中文 由于文件是直接拖到linux下，没有转换文件名
+	// filename不能为中文 由于文件是直接拖到linux下，没有转换文件名
 	@RequestMapping("/download/{fileName}.{suffix}")
 	public ModelAndView download(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("fileName") String fileName, @PathVariable("suffix") String suffix) throws Exception {
 		String contentType = "application/octet-stream";
-//		String str = new String(fileName.getBytes("ISO8859-1"),"utf-8");
+		// String str = new String(fileName.getBytes("ISO8859-1"),"utf-8");
 		String fullFileName = fileName + "." + suffix;
 		infoService.download(request, response, fullFileName, contentType);
 

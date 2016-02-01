@@ -1,4 +1,4 @@
-package com.winndoo.seoinfo.httpRequestUtils;
+package com.winndoo.seoinfo.utils;
  
 import net.sf.json.JSONObject;
 //import org.apache.commons.httpclient.h;
