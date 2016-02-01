@@ -30,11 +30,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.winndoo.seoinfo.httpRequestUtils.HttpRequestUtils;
 import com.winndoo.seoinfo.po.ProjDetailInfo;
 import com.winndoo.seoinfo.po.ProjSimpleInfo;
 import com.winndoo.seoinfo.po.Projdes;
 import com.winndoo.seoinfo.po.TableInfo;
 import com.winndoo.seoinfo.service.InfoService;
+
+import net.sf.json.JSONObject;
 
 //暂时不需要登录验证拦截器
 @Controller
@@ -42,7 +45,36 @@ import com.winndoo.seoinfo.service.InfoService;
 public class InfoController {
 	@Autowired
 	private InfoService infoService;
+	
+	public static final String BIND_ACCOUNT ="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd62ba60538758396&redirect_uri=http%3A%2F%2Fseo.winndoo.com%2FseoInfo%2Finfo%2Fwxbind&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+//	wxd62ba60538758396
+	// 获取是否有cookie
+	@RequestMapping("/wxbind")
+	public String bind(HttpServletRequest request, HttpSession session/*@RequestParam(value="code", required=false) String code*/) throws Exception {
+		
+			String nickname2 = (String) session.getAttribute("nickname");
+			if(nickname2 == null){
+				
+			}
+		
+			String code = request.getParameter("code");
+			String state = request.getParameter("state");
+			if("123".equalsIgnoreCase(state)&&code!=null){
+			String token_uri = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxd62ba60538758396&secret=743e539c3a85117fdc6a11cf70816b3d&code="+code+"&grant_type=authorization_code";
 
+			JSONObject jsonToken = HttpRequestUtils.httpGet(token_uri);
+			String access_token = jsonToken.getString("access_token");
+			String openid = jsonToken.getString("openid");
+			
+			String  userInfo_url = "https://api.weixin.qq.com/sns/userinfo?"+"access_token=" + access_token+"&openid="+openid+"&lang=zh_CN";
+			JSONObject jsonUser = HttpRequestUtils.httpGet(userInfo_url);
+			String nickname = new String(jsonUser.getString("nickname").getBytes("ISO8859-1"),"utf-8");
+						
+		}
+		
+		return "info/tables";
+	}
+	
 	// 总表单浏览
 	@RequestMapping("/tables")
 	public ModelAndView queryTables() throws Exception {
