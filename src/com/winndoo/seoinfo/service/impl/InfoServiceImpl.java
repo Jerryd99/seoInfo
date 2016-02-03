@@ -21,21 +21,15 @@ import com.winndoo.seoinfo.mapper.FilesMapper;
 import com.winndoo.seoinfo.mapper.ProjMapperCustom;
 import com.winndoo.seoinfo.mapper.ProjinfoMapper;
 import com.winndoo.seoinfo.mapper.ProjtypeMapper;
+import com.winndoo.seoinfo.mapper.UserMapper;
+import com.winndoo.seoinfo.mapper.UserMapperCustom;
 import com.winndoo.seoinfo.po.ProjDetailInfo;
 import com.winndoo.seoinfo.po.ProjSimpleInfo;
 import com.winndoo.seoinfo.po.Projinfo;
 import com.winndoo.seoinfo.po.TableInfo;
+import com.winndoo.seoinfo.po.User;
 import com.winndoo.seoinfo.service.InfoService;
 
-/**
- * 
- * <p>Title: InfoServiceImpl</p>
- * <p>Description: 商品管理</p>
- * <p>Company: www.itcast.com</p> 
- * @author	传智.燕青
- * @date	2015-4-13下午3:49:54
- * @version 1.0
- */
 public class InfoServiceImpl implements InfoService{
 	
 	@Autowired
@@ -49,6 +43,9 @@ public class InfoServiceImpl implements InfoService{
 	
 	@Autowired
 	private FilesMapper filesMapper;
+	
+	@Autowired
+	private UserMapperCustom userMapperCustom;
 
 	@Override
 	public List<ProjSimpleInfo> findProjsList() throws Exception {
@@ -144,6 +141,12 @@ public class InfoServiceImpl implements InfoService{
 		}
 		bis.close();
 		bos.close();
+	}
+
+	@Override
+	public User findUserByNickName(String nickname) throws Exception {
+		// TODO Auto-generated method stub
+		return userMapperCustom.findUserByNickname(nickname);
 	}
 	
 }

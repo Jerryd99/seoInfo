@@ -69,12 +69,11 @@
         }
     </style>
     
-    
   </head>
   <body>
 
 <c:forEach items="${tablesList }" var="table">  
-  	<table id="${table.tableId}" class="table table-bordered table-striped">
+  	<table id="${table.tableId}_f" class="table table-bordered table-striped">
    		<caption><a href="">${table.tableName}</a></caption>
    		<thead class="th1">
       		<tr>
@@ -109,4 +108,7 @@
 </c:forEach>
 <br/><br/><br/>
   </body>
+  <script src="<%=request.getContextPath()%>/js/jquery-1.4.4.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=request.getContextPath()%>/js/common.js?v=11"></script>
 </html>

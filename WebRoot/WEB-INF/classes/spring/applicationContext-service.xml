@@ -13,5 +13,6 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
 
-<bean id="itemsService" class="com.winndoo.seoinfo.service.impl.InfoServiceImpl"/>
+<bean id="infoService" class="com.winndoo.seoinfo.service.impl.InfoServiceImpl"/>
+<bean id="wxBindService" class="com.winndoo.seoinfo.service.impl.WxBindServiceImpl"/>
 </beans>

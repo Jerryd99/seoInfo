@@ -58,6 +58,13 @@
 		</property>
 	</bean>
 
-	<!--拦截器 -->
+	<mvc:interceptors>
+	<mvc:interceptor>
+		<mvc:mapping path="/**"/>
+		<bean class="com.winndoo.seoinfo.interceptor.AuthInterceptor"></bean>
+	</mvc:interceptor>
+	
+	</mvc:interceptors>
+
 
 </beans>

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.winndoo.seoinfo.po.ProjDetailInfo;
 import com.winndoo.seoinfo.po.ProjSimpleInfo;
 import com.winndoo.seoinfo.po.TableInfo;
+import com.winndoo.seoinfo.po.User;
 
 public interface InfoService {
 	
@@ -20,6 +21,7 @@ public interface InfoService {
 	public String findProjPriceFileByProjId(int id) throws Exception;
 	public String findProjDetailDesByProjId(int id) throws Exception;
 	public String findProjDetailFileByProjId(int id) throws Exception;
+	public User findUserByNickName(String nickname) throws Exception;
 	
 	public List<TableInfo> getTablesInfo(List<ProjSimpleInfo> list) throws Exception;
 	public void download(HttpServletRequest request,
